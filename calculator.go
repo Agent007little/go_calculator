@@ -82,10 +82,11 @@ func main() {
 					fmt.Println("Ошибка: результат отрицательный или ноль.")
 				}
 			case "/":
-				if n2 != 0 {
-					fmt.Println(toRoman(division(n1, n2)))
+				result := division(n1, n2)
+				if result >= 1 {
+					fmt.Println(toRoman(result))
 				} else {
-					fmt.Println("Ошибка: деление на ноль.")
+					fmt.Println("Ошибка: результат отрицательный или ноль.")
 				}
 			case "*":
 				fmt.Println(toRoman(mult(n1, n2)))
@@ -106,11 +107,7 @@ func main() {
 			case "-":
 				fmt.Println(minus(num1, num2))
 			case "/":
-				if num2 != 0 {
-					fmt.Println(division(num1, num2))
-				} else {
-					fmt.Println("Ошибка: деление на ноль.")
-				}
+				fmt.Println(division(num1, num2))
 			case "*":
 				fmt.Println(mult(num1, num2))
 			default:
