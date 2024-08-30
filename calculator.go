@@ -20,6 +20,7 @@ var allRoman = [][2]interface{}{
 	{1, "I"},
 }
 
+// Функции математических операций
 func sum(a, b int) int {
 	return a + b
 }
@@ -52,31 +53,39 @@ func toRoman(num int) string {
 	return roman
 }
 
+// Функция проверки ошибки. Выдаёт панику если ошибка
 func checkError(condition bool, message string) {
 	if !condition {
 		panic(message)
 	}
 }
 
+// Запуск основной программы
 func main() {
+	// создаём reader указываем ввод с консоли
 	reader := bufio.NewReader(os.Stdin)
 
+	// Бесконечный цикл
 	for {
 		fmt.Println("Введите выражение (например: VI * IX):")
-		inp, _ := reader.ReadString('\n')
+		inp, _ := reader.ReadString('\n') // получаем ввод из консоли
 		inp = strings.TrimSpace(inp)
 
-		parts := strings.Fields(inp)
+		parts := strings.Fields(inp) // Разбиваем input на части
 		checkError(len(parts) == 3, "Ошибка: неверный ввод. Используйте формат 'число оператор число'.")
 
 		num1, sign, num2 := parts[0], parts[1], parts[2]
 
+		/* проверяем какие мы получили числа, римские или арабские
+		Если римские, то ok1 и ok2 будут в значении true */
 		n1, ok1 := romeDict[num1]
 		n2, ok2 := romeDict[num2]
 
+		// Если римские числа
 		if ok1 && ok2 {
 			checkError(n1 > 0 && n1 <= 10 && n2 > 0 && n2 <= 10, "Ошибка: числа должны быть от I до X.")
 
+			// Выполняем вычисление
 			switch sign {
 			case "+":
 				fmt.Println(toRoman(sum(n1, n2)))
@@ -93,13 +102,17 @@ func main() {
 			default:
 				panic("Ошибка: неверный оператор.")
 			}
+			// Если арабские числа
 		} else if !ok1 && !ok2 {
+			// Переводим числа в int тип
 			num1Int, err1 := strconv.Atoi(num1)
 			num2Int, err2 := strconv.Atoi(num2)
 
+			// Проверяем числа, если не перевелись то паника
 			checkError(err1 == nil && err2 == nil, "Ошибка: неверный ввод чисел.")
 			checkError(num1Int > 0 && num1Int <= 10 && num2Int > 0 && num2Int <= 10, "Ошибка: должны быть целые числа от 1 до 10.")
 
+			// Выполняем математические операции
 			switch sign {
 			case "+":
 				fmt.Println(sum(num1Int, num2Int))
@@ -113,6 +126,7 @@ func main() {
 			default:
 				panic("Ошибка: неверный оператор.")
 			}
+			// Паника если невернный ввод чисел
 		} else {
 			panic("Ошибка: неверный ввод чисел.")
 		}
